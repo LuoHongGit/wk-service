@@ -1,0 +1,9 @@
+com\wk\framework\client\XcServiceList.class
+com\wk\framework\model\response\QueryResult.class
+com\wk\framework\model\response\Response.class
+com\wk\framework\model\response\QueryResponseResult.class
+com\wk\framework\web\BaseController.class
+com\wk\framework\model\response\CommonCode.class
+com\wk\framework\model\response\ResultCode.class
+com\wk\framework\model\request\RequestData.class
+com\wk\framework\model\response\ResponseResult.class
