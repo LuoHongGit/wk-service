@@ -21,6 +21,10 @@ public class CmsPagePreviewController extends BaseController {
     @Autowired
     private CmsPageService cmsPageService;
 
+    /**
+     * 页面预览功能
+     * @param pageId
+     */
     @GetMapping("/cms/preview/{pageId}")
     public void preview(@PathVariable("pageId") String pageId){
         String content = cmsPageService.getHtmlPageById(pageId);

@@ -3,12 +3,16 @@ package com.wk.manage_cms;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+@EnableFeignClients
+@EnableDiscoveryClient
 @SpringBootApplication
 @EntityScan("com.wk.framework.domain.cms")
 @ComponentScan(basePackages = {"com.wk.api"})
