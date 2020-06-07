@@ -239,6 +239,7 @@ public class CmsPageService {
 
     /**
      * 通过pageid生成预览页面
+     *
      * @param pageId
      * @return
      */
@@ -266,6 +267,7 @@ public class CmsPageService {
 
     /**
      * 使用模板和数据模型生成静态页面字符串
+     *
      * @param templateStr
      * @param model
      * @return
@@ -300,6 +302,7 @@ public class CmsPageService {
 
     /**
      * 通过pageid获取模型内容
+     *
      * @param pageId
      * @return
      */
@@ -328,6 +331,7 @@ public class CmsPageService {
 
     /**
      * 通过pageId获取模板字符串
+     *
      * @return
      */
     private String getTemplateStrByPageId(String pageId) {
@@ -376,10 +380,11 @@ public class CmsPageService {
 
     /**
      * 发布页面
+     *
      * @param pageId
      * @return
      */
-    public ResponseResult postPage(String pageId){
+    public ResponseResult postPage(String pageId) {
         //获取静态化页面
         String pageStr = this.getHtmlPageById(pageId);
 
@@ -394,16 +399,17 @@ public class CmsPageService {
 
     /**
      * 保存页面
+     *
      * @param pageId
      * @param pageStr
      * @return
      */
-    public CmsPage savePage(String pageId, String pageStr){
+    public CmsPage savePage(String pageId, String pageStr) {
         //通过id查询页面
         Optional<CmsPage> opt = cmsPageRepository.findById(pageId);
 
         //判空
-        if (!opt.isPresent()){
+        if (!opt.isPresent()) {
             ExceptionCast.cast(CmsCode.CMS_PAGE_NOTEXISTS);
         }
 
@@ -412,7 +418,7 @@ public class CmsPageService {
 
         //判断是否存在html文件
         String htmlFileId = cmsPage.getHtmlFileId();
-        if(!StringUtils.isEmpty(htmlFileId)){
+        if (!StringUtils.isEmpty(htmlFileId)) {
             gridFsTemplate.delete(Query.query(Criteria.where("_id").is(htmlFileId)));
         }
 
@@ -429,12 +435,12 @@ public class CmsPageService {
         return cmsPage;
     }
 
-    public void sendPostPage(String pageId){
+    public void sendPostPage(String pageId) {
         //根据id查询页面
         Optional<CmsPage> opt = cmsPageRepository.findById(pageId);
 
         //判空
-        if(!opt.isPresent()){
+        if (!opt.isPresent()) {
             ExceptionCast.cast(CmsCode.CMS_PAGE_NOTEXISTS);
         }
 
@@ -452,6 +458,19 @@ public class CmsPageService {
 
         //发送
         this.rabbitTemplate.convertAndSend(RabbitmqConfig.EX_ROUTING_CMS_POSTPAGE, cmsPage.getSiteId(), msg);
+    }
+
+    //添加页面，如果已存在则更新页面
+    public CmsPageResult saveOrUpdate(CmsPage cmsPage) {
+        //校验页面是否存在，根据页面名称、站点Id、页面webpath查询
+        CmsPage cmsPage1 =
+                cmsPageRepository.findBySiteIdAndPageNameAndPageWebPath(cmsPage.getSiteId(), cmsPage.getPageName(),
+                        cmsPage.getPageWebPath());
+        if (cmsPage1 != null) {
+            return this.editPage(cmsPage1.getPageId(), cmsPage);
+        } else {
+            return this.addPage(cmsPage);
+        }
     }
 
 }

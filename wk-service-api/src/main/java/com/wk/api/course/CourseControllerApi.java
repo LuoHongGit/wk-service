@@ -8,6 +8,8 @@ import com.wk.framework.domain.course.ext.CourseInfo;
 import com.wk.framework.domain.course.ext.TeachplanNode;
 import com.wk.framework.domain.course.request.CourseListRequest;
 import com.wk.framework.domain.course.response.AddCourseResult;
+import com.wk.framework.domain.course.response.CoursePublishResult;
+import com.wk.framework.domain.course.response.CourseView;
 import com.wk.framework.model.response.QueryResponseResult;
 import com.wk.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
@@ -91,4 +93,10 @@ public interface CourseControllerApi {
             @ApiImplicitParam(name = "courseId", value = "课程id",required = true,paramType = "path",dataType = "string")
     })
     ResponseResult deleteCoursePicById(String courseId);
+
+    @ApiOperation("课程视图查询")
+    CourseView courseview(String id);
+
+    @ApiOperation("课程详情页面预览")
+    CoursePublishResult coursePreview(String id);
 }

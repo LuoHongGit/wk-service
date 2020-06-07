@@ -57,4 +57,7 @@ public interface CmsPageControllerApi {
             @ApiImplicitParam(name="id",value = "页面id",required=true,paramType="path"),
     })
     ResponseResult postPage(String id);
+
+    @ApiOperation("保存页面")
+    CmsPageResult save(CmsPage cmsPage);
 }

@@ -6,7 +6,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:123@localhost:27017
-      database: xc_cms
+      database: wk_cms
   rabbitmq:
   host: 127.0.0.1
   port: 5672

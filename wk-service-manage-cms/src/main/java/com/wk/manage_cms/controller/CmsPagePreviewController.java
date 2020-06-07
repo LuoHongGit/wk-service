@@ -31,6 +31,7 @@ public class CmsPagePreviewController extends BaseController {
 
         if (!StringUtils.isEmpty(content)) {
             try {
+                this.response.setContentType("text/html;charset=utf-8");
                 ServletOutputStream outputStream = response.getOutputStream();
                 outputStream.write(content.getBytes("utf-8"));
             } catch (IOException e) {

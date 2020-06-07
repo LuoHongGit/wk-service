@@ -9,6 +9,8 @@ import com.wk.framework.domain.course.ext.CourseInfo;
 import com.wk.framework.domain.course.ext.TeachplanNode;
 import com.wk.framework.domain.course.request.CourseListRequest;
 import com.wk.framework.domain.course.response.AddCourseResult;
+import com.wk.framework.domain.course.response.CoursePublishResult;
+import com.wk.framework.domain.course.response.CourseView;
 import com.wk.framework.exception.ExceptionCast;
 import com.wk.framework.model.response.CommonCode;
 import com.wk.framework.model.response.QueryResponseResult;
@@ -130,6 +132,16 @@ public class CourseController implements CourseControllerApi {
     @DeleteMapping("/coursepic/delete")
     public ResponseResult deleteCoursePicById(@RequestParam("courseId") String courseId) {
         return courseService.deleteCoursePicById(courseId);
+    }
+
+    @GetMapping("/courseview/{id}")
+    public CourseView courseview(@PathVariable("id") String id) {
+        return courseService.getCoruseView(id);
+    }
+
+    @PostMapping("/preview/{id}")
+    public CoursePublishResult coursePreview(@PathVariable("id")String id) {
+        return courseService.preview(id);
     }
 
 }
