@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages={"com.wk.framework"})//扫描common下的所有类
 @ComponentScan(basePackages={"com.wk.manage_cms_client"})
 public class ManageCmsClientApplication {
-public static void main(String[] args) {
-SpringApplication.run(ManageCmsClientApplication.class, args);
-}
+    public static void main(String[] args) {
+        SpringApplication.run(ManageCmsClientApplication.class, args);
+    }
 }

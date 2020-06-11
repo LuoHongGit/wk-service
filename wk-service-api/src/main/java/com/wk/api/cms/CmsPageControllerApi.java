@@ -3,6 +3,7 @@ package com.wk.api.cms;
 import com.wk.framework.domain.cms.CmsPage;
 import com.wk.framework.domain.cms.request.QueryPageRequest;
 import com.wk.framework.domain.cms.response.CmsPageResult;
+import com.wk.framework.domain.cms.response.CmsPostPageResult;
 import com.wk.framework.domain.course.CourseBase;
 import com.wk.framework.model.response.QueryResponseResult;
 import com.wk.framework.model.response.ResponseResult;
@@ -60,4 +61,7 @@ public interface CmsPageControllerApi {
 
     @ApiOperation("保存页面")
     CmsPageResult save(CmsPage cmsPage);
+
+    @ApiOperation("一键发布页面")
+    public CmsPostPageResult postPageQuick(CmsPage cmsPage);
 }

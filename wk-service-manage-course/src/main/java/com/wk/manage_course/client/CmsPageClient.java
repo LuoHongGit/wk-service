@@ -3,6 +3,7 @@ package com.wk.manage_course.client;
 import com.wk.framework.client.WKServiceList;
 import com.wk.framework.domain.cms.CmsPage;
 import com.wk.framework.domain.cms.response.CmsPageResult;
+import com.wk.framework.domain.cms.response.CmsPostPageResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,4 +17,7 @@ public interface CmsPageClient {
 
     @PostMapping("/cms/page/save")
     public CmsPageResult save(@RequestBody CmsPage cmsPage);
+
+    @PostMapping("/cms/page/postPageQuick")
+    public CmsPostPageResult postPageQuick(CmsPage cmsPage);
 }

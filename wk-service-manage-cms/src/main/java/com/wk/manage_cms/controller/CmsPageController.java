@@ -4,6 +4,7 @@ import com.wk.api.cms.CmsPageControllerApi;
 import com.wk.framework.domain.cms.CmsPage;
 import com.wk.framework.domain.cms.request.QueryPageRequest;
 import com.wk.framework.domain.cms.response.CmsPageResult;
+import com.wk.framework.domain.cms.response.CmsPostPageResult;
 import com.wk.framework.domain.course.CourseBase;
 import com.wk.framework.model.response.QueryResponseResult;
 import com.wk.framework.model.response.ResponseResult;
@@ -84,5 +85,10 @@ public class CmsPageController implements CmsPageControllerApi {
     @PostMapping("/save")
     public CmsPageResult save(@RequestBody CmsPage cmsPage) {
         return cmsPageService.saveOrUpdate(cmsPage);
+    }
+
+    @PostMapping("/postPageQuick")
+    public CmsPostPageResult postPageQuick(@RequestBody CmsPage cmsPage) {
+        return cmsPageService.postPageQuick(cmsPage);
     }
 }

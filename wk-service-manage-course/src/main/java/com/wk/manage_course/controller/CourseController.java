@@ -66,6 +66,16 @@ public class CourseController implements CourseControllerApi {
     }
 
     /**
+     * 课程页面发布
+     * @param id
+     * @return
+     */
+    @PostMapping("/publish/{id}")
+    public CoursePublishResult publish(@PathVariable String id) {
+        return courseService.publish(id);
+    }
+
+    /**
      * 通过id查询课程基本信息
      * @param courseid
      * @return

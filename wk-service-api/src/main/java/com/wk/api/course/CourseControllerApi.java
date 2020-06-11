@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 课程控制层API
@@ -99,4 +100,7 @@ public interface CourseControllerApi {
 
     @ApiOperation("课程详情页面预览")
     CoursePublishResult coursePreview(String id);
+
+    @ApiOperation("发布课程")
+    CoursePublishResult publish(@PathVariable String id);
 }

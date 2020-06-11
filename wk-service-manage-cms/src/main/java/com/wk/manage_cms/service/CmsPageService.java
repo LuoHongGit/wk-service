@@ -5,10 +5,12 @@ import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import com.wk.framework.domain.cms.CmsPage;
+import com.wk.framework.domain.cms.CmsSite;
 import com.wk.framework.domain.cms.CmsTemplate;
 import com.wk.framework.domain.cms.request.QueryPageRequest;
 import com.wk.framework.domain.cms.response.CmsCode;
 import com.wk.framework.domain.cms.response.CmsPageResult;
+import com.wk.framework.domain.cms.response.CmsPostPageResult;
 import com.wk.framework.domain.course.CourseBase;
 import com.wk.framework.exception.ExceptionCast;
 import com.wk.framework.model.response.CommonCode;
@@ -17,10 +19,12 @@ import com.wk.framework.model.response.QueryResult;
 import com.wk.framework.model.response.ResponseResult;
 import com.wk.manage_cms.config.RabbitmqConfig;
 import com.wk.manage_cms.dao.CmsPageRepository;
+import com.wk.manage_cms.dao.CmsSiteRepository;
 import com.wk.manage_cms.dao.CmsTemplateRepository;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
@@ -65,9 +69,11 @@ public class CmsPageService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private CmsSiteRepository cmsSiteRepository;
+
     /**
      * 新增页面
-     *
      * @param cmsPage
      * @return
      */
@@ -155,7 +161,6 @@ public class CmsPageService {
 
     /**
      * 根据id查询页面
-     *
      * @param id
      * @return
      */
@@ -177,7 +182,6 @@ public class CmsPageService {
 
     /**
      * 修改页面数据
-     *
      * @param id
      * @param cmsPage
      * @return
@@ -217,7 +221,6 @@ public class CmsPageService {
 
     /**
      * 删除页面
-     *
      * @param id
      * @return
      */
@@ -380,7 +383,6 @@ public class CmsPageService {
 
     /**
      * 发布页面
-     *
      * @param pageId
      * @return
      */
@@ -471,6 +473,54 @@ public class CmsPageService {
         } else {
             return this.addPage(cmsPage);
         }
+    }
+
+    //课程页面一键发布
+    public CmsPostPageResult postPageQuick(CmsPage cmsPage){
+        //新增或者更新cmspage
+        CmsPageResult cmsPageResult = this.saveOrUpdate(cmsPage);
+
+        //判断是否成功
+        if (!cmsPageResult.isSuccess()) {
+            return new CmsPostPageResult(CmsCode.CMS_PAGE_POST_ERROR, null);
+        }
+
+        //获取页面对象
+        CmsPage one = cmsPageResult.getCmsPage();
+        String pageId = one.getPageId();
+
+        //页面发布
+        ResponseResult postResult = this.postPage(pageId);
+
+        //判断是否发布成功
+        if (!postResult.isSuccess()) {
+            return new CmsPostPageResult(CmsCode.CMS_PAGE_POST_ERROR, null);
+        }
+
+        //通过站点id获取站点
+        String siteId = cmsPage.getSiteId();
+
+        CmsSite cmsSite = this.findCmsSiteById(siteId);
+
+        //站点域名
+        String siteDomain = cmsSite.getSiteDomain();
+        //站点web路径
+        String siteWebPath = cmsSite.getSiteWebPath();
+        //页面web路径
+        String pageWebPath = one.getPageWebPath();
+        //页面名称
+        String pageName = one.getPageName();
+        //页面的web访问地址
+        String pageUrl = siteDomain+siteWebPath+pageWebPath+pageName;
+        return new CmsPostPageResult(CommonCode.SUCCESS,pageUrl);
+    }
+
+    public CmsSite findCmsSiteById(String id){
+        Optional<CmsSite> siteOpt = cmsSiteRepository.findById(id);
+        if (siteOpt.isPresent()) {
+            return siteOpt.get();
+        }
+        return null;
     }
 
 }
