@@ -1,12 +1,9 @@
 package com.wk.search.controller;
 
+import com.wk.api.search.EsCourseControllerApi;
 import com.wk.framework.domain.course.CoursePub;
 import com.wk.framework.domain.search.CourseSearchParam;
 import com.wk.framework.model.response.QueryResponseResult;
-import com.xuecheng.api.search.EsCourseControllerApi;
-import com.xuecheng.framework.domain.course.CoursePub;
-import com.xuecheng.framework.domain.search.CourseSearchParam;
-import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.wk.search.service.EsCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

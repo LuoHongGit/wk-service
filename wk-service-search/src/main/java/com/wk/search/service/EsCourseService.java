@@ -78,6 +78,16 @@ public class EsCourseService {
             boolQueryBuilder.filter(QueryBuilders.termQuery("grade",courseSearchParam.getGrade()));
         }
 
+        //分页
+        //当前页码
+        if(page<=0){
+            page = 1;
+        }
+        //起始记录下标
+        int from = (page - 1) * size;
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
+
         //设置boolQueryBuilder到searchSourceBuilder
         searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
@@ -95,6 +105,8 @@ public class EsCourseService {
             SearchHit[] searchHits = hits.getHits();
             for(SearchHit hit:searchHits){
                 CoursePub coursePub = new CoursePub();
+                //设置id
+                coursePub.setId(hit.getId());
                 //源文档
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 //取出name
@@ -104,10 +116,10 @@ public class EsCourseService {
                 String pic = (String) sourceAsMap.get("pic");
                 coursePub.setPic(pic);
                 //价格
-                Float price = null;
+                Double price = null;
                 try {
                     if(sourceAsMap.get("price")!=null ){
-                        price = (Float) sourceAsMap.get("price");
+                        price = (Double) sourceAsMap.get("price");
                     }
 
                 } catch (Exception e) {
@@ -115,10 +127,10 @@ public class EsCourseService {
                 }
                 coursePub.setPrice(price);
                 //旧价格
-                Float price_old = null;
+                Double price_old = null;
                 try {
                     if(sourceAsMap.get("price_old")!=null ){
-                        price_old = (Float) sourceAsMap.get("price_old");
+                        price_old = (Double) sourceAsMap.get("price_old");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
